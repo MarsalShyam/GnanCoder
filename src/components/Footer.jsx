@@ -1,15 +1,18 @@
 import React from 'react'
+import {AiFillHeart} from 'react-icons/ai'
+
 
 const Footer = () => {
     return (
         <div className='bg-slate-800 text-white flex flex-col justify-center items-center bottom-0 w-full'>
-            <div className='logo font-bold text-white text-2xl '>
+            <div className='logo font-bold text-white text-xl md:text-2xl '>
                 <span className='text-green-500'>&lt;</span>
-                Pass
-                <span className='text-green-500'>OP/&gt;</span>
+                Gnan
+                <span className='text-green-500'>CODER/&gt;</span>
             </div>
             <div className='flex justify-center items-center '>
-            Created with <img className='w-6' src="/icons/heart.png" alt="github" /> by Mr. Shyam
+            Supported <AiFillHeart className="w-6 text-red-500 cursor-pointer" />
+            by Dr.Umamaheswari (CSE,HOD)
             </div>
         </div>
     )

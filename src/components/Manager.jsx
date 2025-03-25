@@ -2,6 +2,7 @@ import React from 'react'
 import { useRef, useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid'
+import { AiOutlineCopy } from "react-icons/ai";
 
 const Manager = () => {
   const psRef = useRef();
@@ -125,15 +126,16 @@ const Manager = () => {
         </div>
 
       <div className=" pt-2 md:mycontainer px-2 md:px-0 min-h-[86vh]">
+        
         <h1 className='text text-4xl font-bold text-center'>
           <span className='text-green-500'>&lt;</span>
-          Pass
-          <span className='text-green-500'>OP/&gt;</span>
+          Gnan
+          <span className='text-green-500'>CODE/&gt;</span>
         </h1>
         <p className='text-green-900 text-lg text-center'>Your own Password Manager</p>
 
         <div className=" text-black flex flex-col p-4 gap-8 items-center ">
-          <input onChange={handleChange} value={form.site} placeholder='Enter website URL' className='rounded-full border border-green-500 w-full p-4 py-1' type="text" id="site" name="site" />
+          <input onChange={handleChange} value={form.site} placeholder='Enter Day' className='rounded-full border border-green-500 w-full p-4 py-1' type="text" id="site" name="site" />
 
           <div className="flex flex-col md:flex-row w-full justify-between gap-8">
             <input onChange={handleChange} value={form.username} placeholder='Enter Username' className='rounded-full border border-green-500 w-full p-4 py-1' type="text" id="username" name="username" />
@@ -153,6 +155,8 @@ const Manager = () => {
             trigger="hover">
           </lord-icon>Save Password</button>
         </div>
+
+        
         <div className="passwords">
           <h2 className='font-bold text-2xl py-4'>Your Passwords</h2>
           {passwordArray.length === 0 && <div>No Passwords to show.</div>}
@@ -175,7 +179,8 @@ const Manager = () => {
                       <div className='flex items-center justify-center gap-3'>
                         <a href={item.site} target='_black'>{item.site}</a>
                         <div className='copyicon size-7 cursor-pointer' onClick={() => { copyText(item.site) }}>
-                          <img className=' w-[23px] h-[23px] pt-[3px] pl-[3px]' src="/icons/clipboard-fill.png" alt="copy" />
+                          
+                          <AiOutlineCopy className="text-[23px] pt-[3px] pl-[3px] text-gray-600 cursor-pointer" />
                         </div>
                       </div>
                     </td>
@@ -184,7 +189,7 @@ const Manager = () => {
                       <div className='flex items-center justify-center gap-3'>
                         <span>{item.username} </span>
                         <div className='copyicon size-7 cursor-pointer' onClick={() => { copyText(item.username) }}>
-                          <img className='w-[23px] h-[23px] pt-[3px] pl-[3px]' src="/icons/clipboard-fill.png" alt="copy" />
+                        <AiOutlineCopy className="text-[23px] pt-[3px] pl-[3px] text-gray-600 cursor-pointer" />
                         </div>
                       </div>
                     </td>
@@ -193,7 +198,7 @@ const Manager = () => {
                       <div className='flex items-center justify-center gap-3'>
                         <span>{item.password}</span>
                         <div className='copyicon size-7 cursor-pointer' onClick={() => { copyText(item.password) }}>
-                          <img className='w-[23px] h-[23px] pt-[3px] pl-[3px]' src="/icons/clipboard-fill.png" alt="copy" />
+                        <AiOutlineCopy className="text-[23px] pt-[3px] pl-[3px] text-gray-600 cursor-pointer" />
                         </div>
                       </div>
                     </td>

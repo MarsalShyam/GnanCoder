@@ -1,7 +1,8 @@
 import React from 'react';
 import Navbar from './components/Navbar'
-import Manager from './components/Manager'
+// import Manager from './components/Manager'
 import Footer from './components/Footer'
+import NoteManager from './components/noteManager';
 
 function App() {
   
@@ -10,7 +11,8 @@ function App() {
     <>
     <Navbar/>
     <div>
-    <Manager/>
+    {/* <Manager/> */}
+    <NoteManager/>
     </div>
     <Footer/>
     </>
