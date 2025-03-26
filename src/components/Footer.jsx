@@ -54,7 +54,7 @@ const Footer = () => {
 
             {/* Supporter Section */}
             <div className='flex justify-center items-center text-sm'>
-                Guided and supported <AiFillHeart className="w-5 text-red-500 mx-1 cursor-pointer" />
+                Supported <AiFillHeart className="w-5 text-red-500 mx-1 cursor-pointer" />
                 by Dr.Umamaheswari (CSE, HOD)
             </div>
 
