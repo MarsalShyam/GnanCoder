@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import { FaPlus } from "react-icons/fa";
 
 const NoteManager = () => {
-    const [form, setForm] = useState({ day: "", solution1: "", solution2: "", solution3: "" });
+    const [form, setForm] = useState({ day: "", solutions: ["", "", ""] });
     const [notesArray, setNotesArray] = useState([]);
     const [isExpanded, setIsExpanded] = useState({}); // State to track expanded cards
+
+    const addQuestion = () => {
+        setForm({ ...form, solutions: [...form.solutions, ""] });
+    };
 
     useEffect(() => {
         let notes = localStorage.getItem("notes");
         if (notes) {
-            setNotesArray(JSON.parse(notes));
+            const parsedNotes = JSON.parse(notes);
+            const updatedNotes = parsedNotes.map((note) => {
+                if (note.solution1 || note.solution2 || note.solution3) {
+                    return {
+                        ...note,
+                        solutions: [note.solution1 || "", note.solution2 || "", note.solution3 || ""],
+                    };
+                }
+                return note;
+            });
+            setNotesArray(updatedNotes);
+            localStorage.setItem("notes", JSON.stringify(updatedNotes));
         }
     }, []);
 
@@ -28,7 +44,8 @@ const NoteManager = () => {
         });
     };
 
-    const saveNote = () => {
+    const saveNote = (e) => {
+        e.preventDefault(); // Prevent default form submission
         if (!form.day) {
             toast("Error: Day is required!", {
                 position: "top-right",
@@ -45,9 +62,9 @@ const NoteManager = () => {
             const updatedNotes = [...notesArray];
             updatedNotes[existingNoteIndex] = {
                 ...updatedNotes[existingNoteIndex],
-                solution1: form.solution1 || updatedNotes[existingNoteIndex].solution1,
-                solution2: form.solution2 || updatedNotes[existingNoteIndex].solution2,
-                solution3: form.solution3 || updatedNotes[existingNoteIndex].solution3,
+                solutions: form.solutions.map((solution, index) =>
+                    solution || updatedNotes[existingNoteIndex].solutions[index]
+                ),
             };
             setNotesArray(updatedNotes);
             localStorage.setItem("notes", JSON.stringify(updatedNotes));
@@ -57,17 +74,17 @@ const NoteManager = () => {
             });
         } else {
             // Add a new note
-            const newNote = { id: uuidv4(), day: form.day, solution1: form.solution1, solution2: form.solution2, solution3: form.solution3 };
+            const newNote = { id: uuidv4(), day: form.day, solutions: form.solutions };
             setNotesArray([...notesArray, newNote]);
             localStorage.setItem("notes", JSON.stringify([...notesArray, newNote]));
-            toast("🎉🎊Code Saved!👌👌", {
+            toast("Note Saved!", {
                 position: "top-right",
                 autoClose: 2000,
             });
         }
 
         // Clear the form
-        setForm({ day: "", solution1: "", solution2: "", solution3: "" });
+        setForm({ day: "", solutions: ["", "", ""] });
     };
 
     const deleteNote = (day) => {
@@ -96,8 +113,16 @@ const NoteManager = () => {
         });
     };
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = (e, index) => {
+        if (index !== undefined) {
+            // Handle changes for the solutions array
+            const updatedSolutions = [...form.solutions];
+            updatedSolutions[index] = e.target.value;
+            setForm({ ...form, solutions: updatedSolutions });
+        } else {
+            // Handle changes for the day field
+            setForm({ ...form, [e.target.name]: e.target.value });
+        }
     };
 
     // Function to toggle the expanded state of a day card
@@ -124,7 +149,7 @@ const NoteManager = () => {
                     pauseOnHover
                     theme="light"
                 />
-              
+
 
                 <div className="pt-2 md:mycontainer px-2 md:px-0 min-h-[86vh] md:w-[80%] lg:w-[60%]">
                     <div className="flex justify-center items-center">
@@ -148,7 +173,7 @@ const NoteManager = () => {
 
                     <div className="text-black flex flex-col p-4 gap-8 items-center">
                         <input
-                            onChange={handleChange}
+                            onChange={(e) => handleChange(e)}
                             value={form.day}
                             placeholder="Enter Day"
                             className="rounded-full border border-green-500 w-full p-4 py-1"
@@ -157,35 +182,26 @@ const NoteManager = () => {
                             name="day"
                         />
 
-                        <textarea
-                            onChange={handleChange}
-                            value={form.solution1}
-                            placeholder="Enter Java Code for Question 1"
-                            className="rounded-lg border border-green-500 w-full p-4"
-                            rows="4"
-                            name="solution1"
-                        />
-
-                        <textarea
-                            onChange={handleChange}
-                            value={form.solution2}
-                            placeholder="Enter Java Code for Question 2"
-                            className="rounded-lg border border-green-500 w-full p-4"
-                            rows="4"
-                            name="solution2"
-                        />
-
-                        <textarea
-                            onChange={handleChange}
-                            value={form.solution3}
-                            placeholder="Enter Java Code for Question 3"
-                            className="rounded-lg border border-green-500 w-full p-4"
-                            rows="4"
-                            name="solution3"
-                        />
+                        {form.solutions.map((solution, index) => (
+                            <textarea
+                                key={index}
+                                onChange={(e) => handleChange(e, index)}
+                                value={solution}
+                                placeholder={`Enter Java Code for Question ${index + 1}`}
+                                className="rounded-lg border border-green-500 w-full p-4"
+                                rows="4"
+                            />
+                        ))}
+                        <button
+                            onClick={addQuestion}
+                            className="flex justify-center items-center bg-blue-400 rounded-full w-fit hover:bg-blue-300 px-3 py-2 gap-2 border border-blue-900 mb-4"
+                        >
+                            <FaPlus size={22} className="text-white"/>
+                            Add Question
+                        </button>
 
                         <button
-                            onClick={saveNote}
+                            onClick={(e) => saveNote(e)} // Pass the event to prevent default behavior
                             className="flex justify-center items-center bg-green-400 rounded-full w-fit hover:bg-green-300 px-3 py-2 gap-2 border border-green-900"
                         >
                             <lord-icon
@@ -241,60 +257,26 @@ const NoteManager = () => {
                                     </div>
                                     {isExpanded[note.id] && (
                                         <div className="bg-[#bcf0dad1] p-4 mt-2 rounded-md space-y-4">
-                                            {note.solution1 && (
-                                                <div>
-                                                    <h4 className="font-semibold">Question 1:</h4>
-                                                    <pre className="bg-[#fdf5b294] p-2 rounded-md overflow-auto whitespace-pre-wrap">
-                                                        {note.solution1}
-                                                    </pre>
-                                                    <div
-                                                        className="copyicon size-7 cursor-pointer mt-2"
-                                                        onClick={() => copyText(note.solution1)}
-                                                    >
-                                                        <img
-                                                            className="w-[23px] h-[23px] pt-[3px] pl-[3px]"
-                                                            src="/icons/clipboard-fill.png"
-                                                            alt="copy"
-                                                        />
+                                            {note.solutions.map((solution, index) => (
+                                                solution && (
+                                                    <div key={index}>
+                                                        <h4 className="font-semibold">Question {index + 1}:</h4>
+                                                        <pre className="bg-gray-100 p-2 rounded-md overflow-auto whitespace-pre-wrap">
+                                                            {solution}
+                                                        </pre>
+                                                        <div
+                                                            className="copyicon size-7 cursor-pointer mt-2"
+                                                            onClick={() => copyText(solution)}
+                                                        >
+                                                            <img
+                                                                className="w-[23px] h-[23px] pt-[3px] pl-[3px]"
+                                                                src="/icons/clipboard-fill.png"
+                                                                alt="copy"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                            {note.solution2 && (
-                                                <div>
-                                                    <h4 className="font-semibold">Question 2:</h4>
-                                                    <pre className="bg-[#fdf5b294] p-2 rounded-md overflow-auto whitespace-pre-wrap">
-                                                        {note.solution2}
-                                                    </pre>
-                                                    <div
-                                                        className="copyicon size-7 cursor-pointer mt-2"
-                                                        onClick={() => copyText(note.solution2)}
-                                                    >
-                                                        <img
-                                                            className="w-[23px] h-[23px] pt-[3px] pl-[3px]"
-                                                            src="/icons/clipboard-fill.png"
-                                                            alt="copy"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {note.solution3 && (
-                                                <div>
-                                                    <h4 className="font-semibold">Question 3:</h4>
-                                                    <pre className="bg-[#fdf5b294] p-2 rounded-md overflow-auto whitespace-pre-wrap">
-                                                        {note.solution3}
-                                                    </pre>
-                                                    <div
-                                                        className="copyicon size-7 cursor-pointer mt-2"
-                                                        onClick={() => copyText(note.solution3)}
-                                                    >
-                                                        <img
-                                                            className="w-[23px] h-[23px] pt-[3px] pl-[3px]"
-                                                            src="/icons/clipboard-fill.png"
-                                                            alt="copy"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )}
+                                                )
+                                            ))}
                                         </div>
                                     )}
                                 </div>
