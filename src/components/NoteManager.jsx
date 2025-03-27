@@ -212,7 +212,7 @@ const NoteManager = () => {
                     <div className="flex justify-center items-center">
                         <div className="text-white bg-green-700 my-2 mx-2 rounded-full flex justify-between items-center ring-black ring-1 w-34 py-1">
                             <a
-                                href="https://www.onlinegdb.com/online_java_compiler"
+                                href="https://www.programiz.com/java-programming/online-compiler/"
                                 className="py-0 md:py-2 font-bold px-2"
                             >
                                 <span className="text-black">&lt;</span>
