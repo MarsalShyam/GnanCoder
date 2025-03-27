@@ -57,10 +57,16 @@ const Navbar2 = () => {
                         {LINKS.map((link, index) => (
                             <a
                                 key={index}
-                                href={link.url}
-                                className={`text-sm ${index !== 0 ? "border-l-2 border-neutral-300/20 pl-2" : ""
-                                    } hover:opacity-50 flex justify-center items-center`}
-                                
+                                href={link.url !== "#" ? link.url : "#"}
+                                className={`text-sm flex justify-center items-center 
+            ${index !== 0 ? "border-l-2 border-neutral-300/20 pl-2" : ""} 
+            ${link.url === "#" ? "text-gray-400 cursor-not-allowed" : "hover:opacity-50"}
+        `}
+                                onClick={(e) => {
+                                    if (link.url === "#") {
+                                        e.preventDefault(); // Disable click on inactive links
+                                    }
+                                }}
                             >
                                 {link.text}
                             </a>
@@ -91,12 +97,20 @@ const Navbar2 = () => {
                     {LINKS.map((link, index) => (
                         <a
                             key={index}
-                            href={link.url}
-                            className="block p-3 px-9 uppercase tracking-tighter border-b-2 border-green-400 rounded-sm"  
+                            href={link.url !== "#" ? link.url : "#"}
+                            className={`block p-3 px-9 uppercase tracking-tighter border-b-2 border-green-400 rounded-sm
+            ${link.url === "#" ? "text-gray-400 cursor-not-allowed" : "hover:opacity-50"}
+        `}
+                            onClick={(e) => {
+                                if (link.url === "#") {
+                                    e.preventDefault(); // Disable click on inactive links
+                                }
+                            }}
                         >
                             {link.text}
                         </a>
                     ))}
+
                     <div className="text-white bg-green-700 my-5 mx-2 rounded-full flex justify-between items-center ring-white ring-1">
                         <a
                             href={`${import.meta.env.BASE_URL}/javapdf/javaq.pdf`} // Relative path to the PDF file
