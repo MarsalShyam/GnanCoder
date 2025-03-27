@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { FaPlus } from "react-icons/fa";
+import { FaClipboard } from "react-icons/fa";
 
 const NoteManager = () => {
     const [form, setForm] = useState({ day: "", solutions: ["", "", ""] });
@@ -256,29 +257,25 @@ const NoteManager = () => {
                                         </div>
                                     </div>
                                     {isExpanded[note.id] && (
-                                        <div className="bg-[#bcf0dad1] p-4 mt-2 rounded-md space-y-4">
-                                            {note.solutions.map((solution, index) => (
-                                                solution && (
-                                                    <div key={index}>
-                                                        <h4 className="font-semibold">Question {index + 1}:</h4>
-                                                        <pre className="bg-gray-100 p-2 rounded-md overflow-auto whitespace-pre-wrap">
-                                                            {solution}
-                                                        </pre>
-                                                        <div
-                                                            className="copyicon size-7 cursor-pointer mt-2"
-                                                            onClick={() => copyText(solution)}
-                                                        >
-                                                            <img
-                                                                className="w-[23px] h-[23px] pt-[3px] pl-[3px]"
-                                                                src="/icons/clipboard-fill.png"
-                                                                alt="copy"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                )
-                                            ))}
-                                        </div>
-                                    )}
+  <div className="bg-[#bcf0dad1] p-4 mt-2 rounded-md space-y-4">
+    {note.solutions.map((solution, index) => (
+      solution && (
+        <div key={index}>
+          <h4 className="font-semibold">Question {index + 1}:</h4>
+          <pre className="bg-gray-100 p-2 rounded-md overflow-auto whitespace-pre-wrap">
+            {solution}
+          </pre>
+          <div
+            className="copyicon size-7 cursor-pointer mt-2"
+            onClick={() => copyText(solution)}
+          >
+            <FaClipboard size={23} className="text-gray-600 hover:text-green-500 transition duration-200" />
+          </div>
+        </div>
+      )
+    ))}
+  </div>
+)}
                                 </div>
                             ))}
                     </div>
