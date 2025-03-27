@@ -101,12 +101,11 @@ const NoteManager = () => {
         }
     };
 
-    const editNote = (note) => {
+    const editNote = (e, note) => {
+        e.preventDefault(); // Prevent default behavior
         setForm({
             day: note.day,
-            solution1: note.solution1 || "",
-            solution2: note.solution2 || "",
-            solution3: note.solution3 || "",
+            solutions: note.solutions,
         });
         toast("Editing Note...", {
             position: "top-right",
@@ -197,7 +196,7 @@ const NoteManager = () => {
                             onClick={addQuestion}
                             className="flex justify-center items-center bg-blue-400 rounded-full w-fit hover:bg-blue-300 px-3 py-2 gap-2 border border-blue-900 mb-4"
                         >
-                            <FaPlus size={22} className="text-white"/>
+                            <FaPlus size={22} className="text-white" />
                             Add Question
                         </button>
 
@@ -230,7 +229,7 @@ const NoteManager = () => {
                                                 className="cursor-pointer"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    editNote(note);
+                                                    editNote(e, note);
                                                 }}
                                             >
                                                 <lord-icon
@@ -257,25 +256,25 @@ const NoteManager = () => {
                                         </div>
                                     </div>
                                     {isExpanded[note.id] && (
-  <div className="bg-[#bcf0dad1] p-4 mt-2 rounded-md space-y-4">
-    {note.solutions.map((solution, index) => (
-      solution && (
-        <div key={index}>
-          <h4 className="font-semibold">Question {index + 1}:</h4>
-          <pre className="bg-gray-100 p-2 rounded-md overflow-auto whitespace-pre-wrap">
-            {solution}
-          </pre>
-          <div
-            className="copyicon size-7 cursor-pointer mt-2"
-            onClick={() => copyText(solution)}
-          >
-            <FaClipboard size={23} className="text-gray-600 hover:text-green-500 transition duration-200" />
-          </div>
-        </div>
-      )
-    ))}
-  </div>
-)}
+                                        <div className="bg-[#bcf0dad1] p-4 mt-2 rounded-md space-y-4">
+                                            {note.solutions.map((solution, index) => (
+                                                solution && (
+                                                    <div key={index}>
+                                                        <h4 className="font-semibold">Question {index + 1}:</h4>
+                                                        <pre className="bg-gray-100 p-2 rounded-md overflow-auto whitespace-pre-wrap">
+                                                            {solution}
+                                                        </pre>
+                                                        <div
+                                                            className="copyicon size-7 cursor-pointer mt-2"
+                                                            onClick={() => copyText(solution)}
+                                                        >
+                                                            <FaClipboard size={23} className="text-gray-600 hover:text-green-500 transition duration-200" />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                     </div>
