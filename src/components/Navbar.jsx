@@ -9,19 +9,19 @@ const Navbar = () => {
                     <span className='text-green-500'>CODER/&gt;</span>
                 </div>
 
-                
-                    
-                    <div className="text-white bg-green-700 my-5 mx-2 rounded-full flex justify-between items-center ring-white ring-1">
-                        <a
-                            href={`${import.meta.env.BASE_URL}/javapdf/javaq.pdf`} // Relative path to the PDF file
-                            download="javaq.pdf" // Suggested filename for the downloaded file
-                            className="py-0 md:py-2 font-bold px-2"
-                        >
-                            Download-Q
-                        </a>
-                    </div>
 
-                
+
+                <div className="text-white bg-green-700 my-5 mx-2 rounded-full flex justify-between items-center ring-white ring-1">
+                    <a
+                        href={`${import.meta.env.BASE_URL}/javapdf/javaq.pdf`} // Relative path to the PDF file
+                        download="javaq.pdf" // Suggested filename for the downloaded file
+                        className="py-0 md:py-2 font-bold px-2"
+                    >
+                        Download-Q
+                    </a>
+                </div>
+
+
             </div>
 
         </nav>

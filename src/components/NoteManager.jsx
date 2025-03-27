@@ -193,8 +193,7 @@ const NoteManager = () => {
 
     return (
         <>
-            <div className="border bg-[linear-gradient(to_right,#31C48D,#8DA2FB)]
-">
+            <div className="border bg-[linear-gradient(to_right,#31C48D,#8DA2FB)]">
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
