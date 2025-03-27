@@ -3,11 +3,69 @@ import { ToastContainer, toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { FaPlus } from "react-icons/fa";
 import { FaClipboard } from "react-icons/fa";
+import { FaShare } from "react-icons/fa";
 
 const NoteManager = () => {
     const [form, setForm] = useState({ day: "", solutions: ["", "", ""] });
     const [notesArray, setNotesArray] = useState([]);
     const [isExpanded, setIsExpanded] = useState({}); // State to track expanded cards
+
+
+    const handleShare = (note) => {
+        const formattedContent = formatNoteForSharing(note); // Format the note content
+
+        // Prepare the share data
+        const shareData = {
+            title: `Day ${note.day} Notes`, // Title for the share dialog
+            text: formattedContent, // Main content to share
+
+            //   url: "https://your-deployed-app-url.com",
+        };
+
+        // Check if Web Share API is supported
+        if (navigator.share) {
+            navigator
+                .share(shareData)
+                .then(() => {
+                    toast("Note shared successfully!", {
+                        position: "top-right",
+                        autoClose: 2000,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error sharing:", error);
+                    toast("Sharing failed. Copying to clipboard instead.", {
+                        position: "top-right",
+                        autoClose: 2000,
+                    });
+                    // Fallback: Copy the note content to clipboard
+                    navigator.clipboard.writeText(formattedContent).then(() => {
+                        toast("Note copied to clipboard!", {
+                            position: "top-right",
+                            autoClose: 2000,
+                        });
+                    });
+                });
+        } else {
+            // If Web Share API is not supported, fall back to clipboard copy
+            navigator.clipboard.writeText(formattedContent).then(() => {
+                toast("Note copied to clipboard!", {
+                    position: "top-right",
+                    autoClose: 2000,
+                });
+            });
+        }
+    };
+
+    const formatNoteForSharing = (note) => {
+        let formattedText = `Day: ${note.day}\n\n`; // Start with the day number
+        note.solutions.forEach((solution, index) => {
+            if (solution) {
+                formattedText += `Question ${index + 1}:\n${solution.trim()}\n\n`; // Add each solution
+            }
+        });
+        return formattedText.trim(); // Remove extra whitespace
+    };
 
     const addQuestion = () => {
         setForm({ ...form, solutions: [...form.solutions, ""] });
@@ -252,6 +310,12 @@ const NoteManager = () => {
                                                     trigger="hover"
                                                     style={{ width: "20px", height: "20px" }}
                                                 ></lord-icon>
+                                            </span>
+                                            <span className="cursor-pointer" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleShare(note);
+                                            }}>
+                                                <FaShare size={20} className="text-blue-500 hover:text-blue-700 transition duration-200" />
                                             </span>
                                         </div>
                                     </div>
